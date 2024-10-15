@@ -1,63 +1,83 @@
+import { Button, Label, TextInput } from "flowbite-react";
 import { FormEvent, useState } from "react";
-
-const defaultMovies = [
-  "Friend of the world",
-  "God's creatures",
-  "Confess, Fletch",
-  "Black rain",
-  "Poor things",
-];
+import { fetchMovies, MovieData } from "../utils/fetchMovies";
 
 export default function Movies() {
-  const [movies, setMovies] = useState<string[]>(defaultMovies);
+  const [searchResults, setSearchResults] = useState<MovieData[] | null>(null);
   const [title, setTitle] = useState<string>("");
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
-  const handleAddMovie = (e: FormEvent) => {
+  const handleOnChangeTitle = (e: FormEvent<HTMLInputElement>) => {
+    const value = e.currentTarget.value;
+    setTitle(value);
+  };
+
+  const handleAddMovie = async (e: FormEvent) => {
     e.preventDefault();
-    if (title.trim()) {
-      setMovies([...movies, title]);
-      setTitle("");
+    if (title.length > 0) {
+      setSearchQuery("");
+      const movies = await fetchMovies(title);
+      setSearchQuery(title);
+      setSearchResults(movies);
+      console.log(movies);
+    } else {
+      setSearchQuery("");
     }
   };
 
-  const handleRemoveMovie = (indexToRemove: number) => {
-    setMovies((currentMovies: string[]) => [
-      ...currentMovies.slice(0, indexToRemove),
-      ...currentMovies.slice(indexToRemove + 1),
-    ]);
-  };
-
   return (
-    <div>
-      <h1>Movies</h1>
-      <form onSubmit={handleAddMovie}>
-        <input
-          type="text"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          placeholder="Enter movie title"
-          style={{
-            lineHeight: "2.1em",
-            fontSize: "1em",
-            paddingLeft: "0.7em",
-            marginRight: "0.7em",
-          }}
-        />
-        <button type="submit">Add Movie</button>
-      </form>
-      <ol style={{ textAlign: "left" }}>
-        {movies.map((title, index) => (
-          <li key={index}>
-            {title}{" "}
-            <span
-              style={{ cursor: "pointer" }}
-              onClick={() => handleRemoveMovie(index)}
-            >
-              ×
-            </span>
-          </li>
+    <div className="grid place-items-center gap-12 bg-gray-100 pb-10 pt-10 font-mono dark:bg-gray-900">
+      <div className="max-w-xlg w-5/6 flex-col rounded-md bg-white px-4 leading-none text-gray-900 shadow-lg md:flex dark:bg-gray-800 dark:text-gray-300">
+        <div className="text-md my-4 flex justify-center px-4 text-lg font-bold">
+          Add movie
+        </div>
+        <form className="gap-4" onSubmit={handleAddMovie}>
+          <div className="flex flex-col md:flex-row">
+            <Label
+              htmlFor="title"
+              value="Movie title"
+              className="mx-2 mt-3 h-6 text-left font-bold"
+            />
+            <TextInput
+              id="title"
+              type="text"
+              placeholder="Movie title..."
+              required
+              value={title}
+              onChange={handleOnChangeTitle}
+              className="flex grow flex-col"
+            />
+          </div>
+          <div className="my-4 flex justify-center text-sm">
+            <Button type="submit">Submit</Button>
+          </div>
+        </form>
+      </div>
+      {searchResults !== null &&
+        (searchResults.length !== 0 ? (
+          <div className="max-w-xlg w-5/6 flex-col rounded-md bg-white py-6 leading-none text-gray-900 shadow-lg md:flex dark:bg-gray-800 dark:text-gray-300">
+            {searchResults.map((movie, i) => (
+              <div key={i} className="text-md my-2 flex flex-col px-4 text-sm">
+                <div className="flex flex-row">
+                  <img className="w-1/4 self-start" src={movie.poster} />
+                  <div className="flex grow flex-col justify-between px-4">
+                    <div>
+                      <div className="text-md font-bold">
+                        {movie.title}, {movie.release_date.split("-")[0]}
+                      </div>
+                      <p>{movie.overview}</p>
+                    </div>
+                    <Button className="place-self-end">Save</Button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          searchQuery.length > 0 && (
+            <span>Nothing found for "{searchQuery}"</span>
+          )
         ))}
-      </ol>
     </div>
   );
 }
