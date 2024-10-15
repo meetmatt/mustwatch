@@ -14,6 +14,7 @@ export default tseslint.config(
       js.configs.recommended,
       ...tseslint.configs.recommendedTypeChecked,
       ...tseslint.configs.stylisticTypeChecked,
+      "plugin:tailwindcss/recommended",
     ],
     files: ["**/*.{ts,tsx}"],
     languageOptions: {
@@ -31,6 +32,10 @@ export default tseslint.config(
     },
     settings: {
       react: { version: "18.3" },
+      tailwindcss: {
+        callees: ["twMerge", "createTheme"],
+        classRegex: "^(class(Name)|theme)?$",
+      },
     },
     rules: {
       ...react.configs.recommended.rules,
@@ -41,5 +46,5 @@ export default tseslint.config(
         { allowConstantExport: true },
       ],
     },
-  }
+  },
 );

@@ -1,17 +1,24 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import App from "./App.tsx";
-import Movies from "./Movies.tsx";
-import "./index.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+
+import "./main.css";
+
+import Layout from "./components/Layout/Layout.tsx";
+import Index from "./pages/Index.tsx";
+import AddMovie from "./pages/AddMovie.tsx";
+import Movies from "./pages/Movies.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<App />} />
-        <Route path="/movies" element={<Movies />} />
+        <Route index element={<Index />} />
+        <Route path="/" element={<Layout />}>
+          <Route path="add-movie" element={<AddMovie />} />
+          <Route path="movies" element={<Movies />} />
+        </Route>
       </Routes>
     </BrowserRouter>
-  </StrictMode>
+  </StrictMode>,
 );
