@@ -1,4 +1,9 @@
-export function Movie() {
+interface MovieProps {
+  title: string;
+  description: string;
+}
+
+export function Movie({ title, description }: MovieProps) {
   return (
     <div className="movie">
       <div className="rounded-md bg-white shadow-lg dark:bg-gray-800">
@@ -12,28 +17,24 @@ export function Movie() {
           </div>
 
           <div className="flex-col text-gray-900 dark:text-gray-300">
-            <p className="pt-4 text-2xl font-bold">Joker (2020)</p>
+            <h2 className="pt-4 text-center text-2xl font-bold">{title}</h2>
             <hr className="hr-text mt-2" data-content="" />
-            <div className="text-md my-2 flex justify-between px-4">
+            <div className="text-md my-2 flex justify-center px-4">
               <span className="pt-2 text-sm font-bold">
-                2h 2min | Crime, Drama, Thriller
+                2020 | 122 min | Crime • Drama • Thriller
               </span>
-              <span className="font-bold"></span>
             </div>
-            <p className="my-4 hidden px-4 text-left text-sm md:block">
-              In Gotham City, mentally troubled comedian Arthur Fleck is
-              disregarded and mistreated by society. He then embarks on a
-              downward spiral of revolution and bloody crime. This path brings
-              him face-to-face with his alter-ego: the Joker.
+            <p className="my-4 px-4 text-justify text-sm md:block">
+              {description}
             </p>
 
-            <p className="text-md my-2 flex px-4">
+            <p className="my-2 flex justify-end px-4 text-sm">
               Rating: 9.0/10
               <span className="px-2 font-bold">|</span>
               Mood: Dark
             </p>
 
-            <div className="text-xs">
+            <div className="flex justify-end text-xs">
               <button
                 type="button"
                 className="ease focus:shadow-outline m-2 select-none rounded-md border border-gray-400 px-4 py-2 text-gray-400 transition duration-500 hover:bg-gray-900 focus:outline-none"
