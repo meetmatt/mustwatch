@@ -14,7 +14,7 @@ RUN bun install
 COPY . .
 
 # Build the React app using Vite
-RUN bun run build
+RUN NODE_ENV=production bun run build
 
 FROM nginx:alpine
 
