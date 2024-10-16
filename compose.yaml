@@ -1,0 +1,10 @@
+services:
+  frontend:
+    build: .
+  api:
+    build: api
+    volumes:
+      - data:/app/data
+
+volumes:
+  data:

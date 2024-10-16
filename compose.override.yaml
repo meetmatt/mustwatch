@@ -1,0 +1,15 @@
+services:
+  frontend:
+    volumes:
+      - ./dist:/usr/share/nginx/html:ro
+    ports:
+      - 80:80
+
+  api:
+    volumes:
+      - data:/app/data:rw
+    env_file:
+      - .env
+
+volumes:
+  data:
