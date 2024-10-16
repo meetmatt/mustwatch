@@ -19,8 +19,8 @@ import { EmailPasswordPreBuiltUI } from "supertokens-auth-react/recipe/emailpass
 SuperTokens.init({
   appInfo: {
     appName: "MustWatch",
-    apiDomain: String(process.env.AUTH_API_DOMAIN),
-    websiteDomain: String(process.env.AUTH_WEBSITE_DOMAIN),
+    apiDomain: String(import.meta.env.AUTH_API_DOMAIN),
+    websiteDomain: String(import.meta.env.AUTH_WEBSITE_DOMAIN),
     apiBasePath: "/api/auth",
     websiteBasePath: "/auth",
   },
