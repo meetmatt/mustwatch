@@ -1,0 +1,9 @@
+services:
+  frontend:
+    build: .
+  api:
+    build: api
+
+volumes:
+  data:
+    external: true

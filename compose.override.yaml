@@ -1,0 +1,11 @@
+services:
+  frontend:
+    command: bun run dev
+    ports:
+      - 80:80
+  api:
+    volumes:
+      - data:/app/data:rw
+
+volumes:
+  data:
