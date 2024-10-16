@@ -1,8 +1,11 @@
-import supertokens from "supertokens-node";
-import Session from "supertokens-node/recipe/session";
-import EmailPassword from "supertokens-node/recipe/emailpassword";
-import ThirdParty from "supertokens-node/recipe/thirdparty";
-import { errorHandler, middleware } from "supertokens-node/framework/express";
+import supertokens from "npm:supertokens-node";
+import Session from "npm:supertokens-node/recipe/session";
+import EmailPassword from "npm:supertokens-node/recipe/emailpassword";
+import ThirdParty from "npm:supertokens-node/recipe/thirdparty";
+import {
+  errorHandler,
+  middleware,
+} from "npm:supertokens-node/framework/express";
 import express from "npm:express";
 import cors from "npm:cors";
 
@@ -49,30 +52,21 @@ supertokens.init({
 
               // Post sign up response, we check if it was successful
               if (response.status === "OK") {
-                console.log(response);
-                let { id, emails } = response.user;
-                // if (emails[0] !== String(Deno.env.get("AUTH_ALLOWED_EMAILS"))) {
-                //
-                // }
-
-                // This is the response from the OAuth 2 provider that contains their tokens or user info.
-                let providerAccessToken = response.oAuthTokens["access_token"];
-                let firstName =
-                  response.rawUserInfoFromProvider.fromUserInfoAPI![
-                    "first_name"
-                  ];
-
-                if (input.session === undefined) {
-                  if (
-                    response.createdNewRecipeUser &&
-                    response.user.loginMethods.length === 1
-                  ) {
-                    // TODO: Post sign up logic
-                  } else {
-                    // TODO: Post sign in logic
-                  }
+                const { emails } = response.user;
+                const allowedEmails = String(
+                  Deno.env.get("AUTH_ALLOWED_EMAILS"),
+                ).split(",");
+                const matches = emails.filter((email) =>
+                  allowedEmails.includes(email),
+                );
+                if (matches.length === 0) {
+                  return {
+                    status: "SIGN_IN_UP_NOT_ALLOWED",
+                    reason: "User not allowed",
+                  };
                 }
               }
+
               return response;
             },
           };
