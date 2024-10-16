@@ -1,21 +1,13 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import * as reactRouterDom from "react-router-dom";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
 import SuperTokens, { SuperTokensWrapper } from "supertokens-auth-react";
 import ThirdParty, { Github } from "supertokens-auth-react/recipe/thirdparty";
 import EmailPassword from "supertokens-auth-react/recipe/emailpassword";
 import Session from "supertokens-auth-react/recipe/session";
+import type { RecipeInterface } from "supertokens-web-js/recipe/emailpassword";
 
 import "./main.css";
-
-import Layout from "./components/Layout/Layout.tsx";
-import Index from "./pages/Index.tsx";
-import AddMovie from "./pages/AddMovie.tsx";
-import Movies from "./pages/Movies.tsx";
-import { getSuperTokensRoutesForReactRouterDom } from "supertokens-auth-react/ui";
-import { ThirdPartyPreBuiltUI } from "supertokens-auth-react/recipe/thirdparty/prebuiltui";
-import { EmailPasswordPreBuiltUI } from "supertokens-auth-react/recipe/emailpassword/prebuiltui";
+import App from "./components/App.tsx";
 
 SuperTokens.init({
   appInfo: {
@@ -41,7 +33,7 @@ SuperTokens.init({
     }),
     EmailPassword.init({
       override: {
-        apis: (originalImplementation) => {
+        functions: (originalImplementation: RecipeInterface) => {
           return {
             ...originalImplementation,
             signUpPOST: undefined,
@@ -56,19 +48,7 @@ SuperTokens.init({
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <SuperTokensWrapper>
-      <BrowserRouter>
-        <Routes>
-          <Route index element={<Index />} />
-          <Route path="/" element={<Layout />}>
-            <Route path="add-movie" element={<AddMovie />} />
-            <Route path="movies" element={<Movies />} />
-          </Route>
-          {getSuperTokensRoutesForReactRouterDom(reactRouterDom, [
-            ThirdPartyPreBuiltUI,
-            EmailPasswordPreBuiltUI,
-          ])}
-        </Routes>
-      </BrowserRouter>
+      <App />
     </SuperTokensWrapper>
   </StrictMode>,
 );
