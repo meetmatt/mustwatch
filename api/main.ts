@@ -6,8 +6,6 @@ import { errorHandler, middleware } from "supertokens-node/framework/express";
 import express from "npm:express";
 import cors from "npm:cors";
 
-console.log(process.env);
-
 supertokens.init({
   framework: "express",
   supertokens: {
