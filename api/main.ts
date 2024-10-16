@@ -10,12 +10,12 @@ supertokens.init({
   framework: "express",
   supertokens: {
     connectionURI: "https://auth.int.golikov.lu",
-    apiKey: Deno.env.get("SUPERTOKENS_API_KEY"),
+    apiKey: String(Deno.env.get("SUPERTOKENS_API_KEY")),
   },
   appInfo: {
     appName: "MustWatch",
-    apiDomain: "https://mustwatch.golikov.lu",
-    websiteDomain: "https://mustwatch.golikov.lu",
+    apiDomain: String(Deno.env.get("AUTH_API_DOMAIN")),
+    websiteDomain: String(Deno.env.get("AUTH_WEBSITE_DOMAIN")),
     apiBasePath: "/api/auth",
     websiteBasePath: "/auth",
   },
@@ -48,7 +48,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: "https://mustwatch.golikov.lu",
+    origin: String(Deno.env.get("AUTH_WEBSITE_DOMAIN")),
     allowedHeaders: ["content-type", ...supertokens.getAllCORSHeaders()],
     credentials: true,
   }),
