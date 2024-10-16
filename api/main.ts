@@ -39,6 +39,45 @@ supertokens.init({
           },
         ],
       },
+      override: {
+        functions: (originalImplementation) => {
+          return {
+            ...originalImplementation,
+            signInUp: async function (input) {
+              // First we call the original implementation of signInUp.
+              const response = await originalImplementation.signInUp(input);
+
+              // Post sign up response, we check if it was successful
+              if (response.status === "OK") {
+                console.log(response);
+                let { id, emails } = response.user;
+                // if (emails[0] !== String(Deno.env.get("AUTH_ALLOWED_EMAILS"))) {
+                //
+                // }
+
+                // This is the response from the OAuth 2 provider that contains their tokens or user info.
+                let providerAccessToken = response.oAuthTokens["access_token"];
+                let firstName =
+                  response.rawUserInfoFromProvider.fromUserInfoAPI![
+                    "first_name"
+                  ];
+
+                if (input.session === undefined) {
+                  if (
+                    response.createdNewRecipeUser &&
+                    response.user.loginMethods.length === 1
+                  ) {
+                    // TODO: Post sign up logic
+                  } else {
+                    // TODO: Post sign in logic
+                  }
+                }
+              }
+              return response;
+            },
+          };
+        },
+      },
     }),
     Session.init(),
   ],
