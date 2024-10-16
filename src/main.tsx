@@ -4,6 +4,7 @@ import * as reactRouterDom from "react-router-dom";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import SuperTokens, { SuperTokensWrapper } from "supertokens-auth-react";
 import ThirdParty, { Github } from "supertokens-auth-react/recipe/thirdparty";
+import EmailPassword from "supertokens-auth-react/recipe/emailpassword";
 import Session from "supertokens-auth-react/recipe/session";
 
 import "./main.css";
@@ -24,10 +25,28 @@ SuperTokens.init({
     apiBasePath: "/api/auth",
     websiteBasePath: "/auth",
   },
+  style: `
+      [data-supertokens~=headerSubtitle],
+      [data-supertokens~=dividerWithOr],
+      [data-supertokens~=superTokensBranding],
+      form {
+          display: none;
+      }
+  `,
   recipeList: [
     ThirdParty.init({
       signInAndUpFeature: {
         providers: [Github.init()],
+      },
+    }),
+    EmailPassword.init({
+      override: {
+        apis: (originalImplementation) => {
+          return {
+            ...originalImplementation,
+            signUpPOST: undefined,
+          };
+        },
       },
     }),
     Session.init(),
