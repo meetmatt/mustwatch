@@ -1,11 +1,15 @@
 services:
   frontend:
-    command: bun run dev
     ports:
       - 80:80
+    env_file:
+      - .env
+
   api:
     volumes:
       - data:/app/data:rw
+    env_file:
+      - .env
 
 volumes:
   data:

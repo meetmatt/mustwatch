@@ -1,11 +1,11 @@
-FROM deno:latest
+FROM denoland/deno:alpine
+
+EXPOSE 80
 
 WORKDIR /app
 
 COPY . /app
 
-EXPOSE 80
+RUN deno cache main.ts
 
-RUN deno install
-
-CMD ["deno", "run", "-A", "-unstable-ffi", "main.ts"]
+CMD ["run", "--allow-net", "--allow-env", "--allow-read", "main.ts"]

@@ -6,6 +6,8 @@ import { errorHandler, middleware } from "supertokens-node/framework/express";
 import express from "npm:express";
 import cors from "npm:cors";
 
+console.log(process.env);
+
 supertokens.init({
   framework: "express",
   supertokens: {
@@ -55,4 +57,10 @@ app.use(
 );
 
 app.use(middleware());
+
+app.get("/", (req, res) => {
+  res.send("Welcome to the Dinosaur API!");
+});
+
 app.use(errorHandler());
+app.listen(80);
