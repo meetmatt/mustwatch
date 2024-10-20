@@ -1,0 +1,49 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  binaryTargets   = ["native", "darwin-arm64"]
+  provider        = "prisma-client-js"
+  previewFeatures = ["deno"]
+  output          = "./generated/client"
+}
+
+model User {
+  id            Int            @id @default(autoincrement())
+  email         String         @unique
+  picture       String
+  lists         List[]
+  refreshTokens RefreshToken[]
+}
+
+model RefreshToken {
+  id        Int      @id @default(autoincrement())
+  token     String   @unique
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model List {
+  id       Int     @id @default(autoincrement())
+  userId   Int
+  user     User    @relation(fields: [userId], references: [id])
+  title    String
+  slug     String  @unique
+  isPublic Boolean @default(false)
+  movies   Movie[]
+}
+
+model Movie {
+  id        Int      @id @default(autoincrement())
+  tmdbId    Int
+  title     String
+  year      Int
+  genres    String[]
+  actors    String[]
+  director  String
+  countries String[]
+  isWatched Boolean  @default(false)
+  lists     List[]
+}

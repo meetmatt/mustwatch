@@ -1,34 +1,23 @@
-# Use a lightweight node image as the base image
-FROM oven/bun:latest as builder
-
-# Set the working directory inside the container
+FROM node:22-slim as dev
 WORKDIR /app
+EXPOSE 8000
+RUN npm install -g vite
+COPY ./package.json /app/package.json
+RUN npm install
+CMD ["vite"]
 
-# Copy package.json and lock files first
-COPY package.json bun.lockb /app/
-
-# Install dependencies using bun
-RUN bun install
-
-# Copy the rest of the application files
+FROM node:22-alpine as builder
+WORKDIR /app
+COPY package.json /app
+RUN npm install
 COPY . .
+RUN vite build
 
 # Build the React app using Vite
-RUN NODE_ENV=production bun run build
-
-FROM nginx:alpine
-
-# Remove the default NGINX static assets (optional, for cleanliness)
-RUN rm -rf /usr/share/nginx/html/*
-
-# Copy the built React app from the builder stage
-COPY --from=builder /app/dist /usr/share/nginx/html
-
-# Copy a custom NGINX config if needed (optional)
+FROM nginx:alpine as prod
+RUN mkdir -p /var/www
+COPY --from=builder /app/dist /var/www/public
 COPY nginx.conf /etc/nginx/nginx.conf
-
-# Expose port 80 to the outside world
 EXPOSE 80
 
-# Start NGINX
 CMD ["nginx", "-g", "daemon off;"]

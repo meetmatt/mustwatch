@@ -1,11 +1,17 @@
-FROM denoland/deno:alpine
-
-EXPOSE 80
+FROM denoland/deno as dev
 
 WORKDIR /app
 
 COPY . /app
 
-RUN deno cache main.ts
+EXPOSE 80
 
-CMD ["run", "--allow-net", "--allow-env", "--allow-read", "main.ts"]
+CMD ["task", "dev"]
+
+FROM denoland/deno as prod
+
+COPY . /app
+
+RUN deno cache src/main.ts
+
+CMD ["run", "--allow-net", "--allow-env", "--allow-read", "src/main.ts"]

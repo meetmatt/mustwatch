@@ -1,13 +1,9 @@
-import * as reactRouterDom from "react-router-dom";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Index from "../pages/Index.tsx";
 import Layout from "./Layout/Layout.tsx";
 import { SessionAuth } from "supertokens-auth-react/recipe/session";
 import AddMovie from "../pages/AddMovie.tsx";
 import Movies from "../pages/Movies.tsx";
-import { getSuperTokensRoutesForReactRouterDom } from "supertokens-auth-react/ui";
-import { ThirdPartyPreBuiltUI } from "supertokens-auth-react/recipe/thirdparty/prebuiltui";
-import { EmailPasswordPreBuiltUI } from "supertokens-auth-react/recipe/emailpassword/prebuiltui";
 
 export default function App() {
   return (
@@ -25,10 +21,6 @@ export default function App() {
           <Route path="add-movie" element={<AddMovie />} />
           <Route path="movies" element={<Movies />} />
         </Route>
-        {getSuperTokensRoutesForReactRouterDom(reactRouterDom, [
-          ThirdPartyPreBuiltUI,
-          EmailPasswordPreBuiltUI,
-        ])}
       </Routes>
     </BrowserRouter>
   );

@@ -16,5 +16,6 @@ dist
 dist-ssr
 *.local
 *.tsbuildinfo
+api/prisma/generated
 
 
