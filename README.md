@@ -22,9 +22,8 @@ It's MIT licensed and requires self-hosting, so you may run it yourself if you f
 
 ### Backend
 
-- Python v3.12
-- FastAPI v0.115
-- Uvicorn v0.31
+- Deno 2 + Oak Framework
+- Google OAuth2
 - Postgres v16.4
 
 ### Infrastructure
@@ -35,6 +34,10 @@ It's MIT licensed and requires self-hosting, so you may run it yourself if you f
 
 # License
 
-MIT ()
+MIT License
+
+Copyright (c) 2024 Yuriy Golikov
+
+Movie data provided by [TMDB](https://www.themoviedb.org/).
 
 The name "Must Watch" is not a registered trade mark, none of the rights reserved, it's just a code name of an educational project. If you are copyright holder of such name, please reach out to me at iurii dot golikov gmail dot com.

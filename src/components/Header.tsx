@@ -1,16 +1,25 @@
 import { Button, DarkThemeToggle, Navbar } from "flowbite-react";
-import logo from "../../assets/logo-no-bg-no-text.png";
-import { Link, NavLink, useLocation } from "react-router-dom";
+import logo from "../assets/logo-no-bg-no-text.png";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
+import { useContext, useEffect } from "react";
+import { AuthContext } from "./AuthContext";
 
 export default function Header() {
+  const { loggedIn, user } = useContext(AuthContext);
   const location = useLocation();
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!user) {
+      navigate("/auth/login");
+    }
+  });
 
   return (
     <header>
       <Navbar fluid className="drop-shadow-md">
         <Navbar.Brand as={Link} to="/">
           <img src={logo} className="mr-3 h-8 sm:h-12" alt="Must Watch" />
-          <span className="text-md self-center whitespace-nowrap font-semibold text-gray-900 sm:text-xl dark:text-gray-100">
+          <span className="text-md self-center whitespace-nowrap font-semibold text-gray-900 dark:text-gray-100 sm:text-xl">
             Must Watch
           </span>
         </Navbar.Brand>
@@ -34,6 +43,7 @@ export default function Header() {
           </Navbar.Link>
         </Navbar.Collapse>
       </Navbar>
+      {loggedIn && user && <p>UserID: {user.userId}</p>}
     </header>
   );
 }

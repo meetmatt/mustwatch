@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import logo from "../assets/logo-no-bg-no-text.png";
 
 export type MovieData = {
@@ -12,21 +13,38 @@ export type MovieData = {
 export const fetchMovies = async function (
   query: string,
 ): Promise<MovieData[]> {
-  const url = `https://api.themoviedb.org/3/search/movie?api_key=3a0de3eeb3760231e263ad89f4cc73b1&query=${query}`;
-  const response = await fetch(url);
-  const json = await response.json();
+  const accessToken = localStorage.getItem("accessToken") as string;
+  if (!accessToken) {
+    const navigate = useNavigate();
+    navigate("/auth/login");
+  }
+  const encodedQuery = encodeURIComponent(query);
+  const url = `${import.meta.env.VITE_API_HOST}api/movies?q=${encodedQuery}`;
 
-  const movies: MovieData[] = json.results;
-
-  return movies
-    .sort(
-      (movieA: MovieData, movieB: MovieData) =>
-        movieB.popularity - movieA.popularity,
-    )
-    .map((movie: MovieData) => {
-      const poster = movie.poster_path
-        ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
-        : logo;
-      return { ...movie, poster };
+  try {
+    const response = await fetch(url, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-type": "application/json",
+      },
     });
+    const json = await response.json();
+    const movies: MovieData[] = json.data;
+
+    return movies
+      .sort(
+        (movieA: MovieData, movieB: MovieData) =>
+          movieB.popularity - movieA.popularity,
+      )
+      .map((movie: MovieData) => {
+        const poster = movie.poster_path
+          ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
+          : logo;
+        return { ...movie, poster };
+      });
+  } catch (error) {
+    console.error("Failed to fetch movies", error);
+
+    return [];
+  }
 };

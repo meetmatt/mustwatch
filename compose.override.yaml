@@ -1,15 +1,30 @@
 services:
-  frontend:
-    volumes:
-      - ./dist:/usr/share/nginx/html:ro
-    ports:
-      - 80:80
-
   api:
+    build:
+      target: dev
+      args:
+        DATABASE_URL: ${DATABASE_URL:?error}
     volumes:
-      - data:/app/data:rw
+      - ./api:/app
+    ports:
+      - 9000:9000
+    env_file:
+      - .env
+
+  frontend:
+    build:
+      target: dev
+    volumes:
+      - ./:/app
+      - node_modules:/app/node_modules
+    ports:
+      - 8000:8000
+    env_file:
+      - .env
+
+  postgres:
     env_file:
       - .env
 
 volumes:
-  data:
+  node_modules:

@@ -19,7 +19,6 @@ export default function Movies() {
       const movies = await fetchMovies(title);
       setSearchQuery(title);
       setSearchResults(movies);
-      console.log(movies);
     } else {
       setSearchQuery("");
     }
@@ -27,7 +26,7 @@ export default function Movies() {
 
   return (
     <div className="grid place-items-center gap-12 bg-gray-100 pb-10 pt-10 font-mono dark:bg-gray-900">
-      <div className="max-w-xlg w-5/6 flex-col rounded-md bg-white px-4 leading-none text-gray-900 shadow-lg md:flex dark:bg-gray-800 dark:text-gray-300">
+      <div className="max-w-xlg w-5/6 flex-col rounded-md bg-white px-4 leading-none text-gray-900 shadow-lg dark:bg-gray-800 dark:text-gray-300 md:flex">
         <div className="text-md my-4 flex justify-center px-4 text-lg font-bold">
           Add movie
         </div>
@@ -55,7 +54,7 @@ export default function Movies() {
       </div>
       {searchResults !== null &&
         (searchResults.length !== 0 ? (
-          <div className="max-w-xlg w-5/6 flex-col rounded-md bg-white py-6 leading-none text-gray-900 shadow-lg md:flex dark:bg-gray-800 dark:text-gray-300">
+          <div className="max-w-xlg w-5/6 flex-col rounded-md bg-white py-6 leading-none text-gray-900 shadow-lg dark:bg-gray-800 dark:text-gray-300 md:flex">
             {searchResults.map((movie, i) => (
               <div key={i} className="text-md my-2 flex flex-col px-4 text-sm">
                 <div className="flex flex-row">
@@ -75,7 +74,9 @@ export default function Movies() {
           </div>
         ) : (
           searchQuery.length > 0 && (
-            <span>Nothing found for "{searchQuery}"</span>
+            <span className="text-gray-900 dark:text-gray-200">
+              Nothing found for "{searchQuery}"
+            </span>
           )
         ))}
     </div>

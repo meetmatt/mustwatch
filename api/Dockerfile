@@ -1,11 +1,28 @@
-FROM denoland/deno:alpine
+FROM denoland/deno as dev
 
-EXPOSE 80
+ARG DATABASE_URL=
+ENV DATABASE_URL=${DATABASE_URL}
 
 WORKDIR /app
 
 COPY . /app
 
-RUN deno cache main.ts
+RUN apt-get update -yqq && apt-get install -yqq openssl
 
-CMD ["run", "--allow-net", "--allow-env", "--allow-read", "main.ts"]
+RUN deno task prisma:generate
+
+RUN deno task prisma migrate dev --skip-generate || env
+
+CMD ["task", "dev"]
+
+FROM denoland/deno as prod
+
+WORKDIR /app
+
+COPY . /app
+
+EXPOSE 9000
+
+RUN deno cache src/main.ts
+
+CMD ["run", "--allow-net", "--allow-env", "--allow-read", "src/main.ts"]

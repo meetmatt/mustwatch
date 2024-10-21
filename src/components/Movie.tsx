@@ -6,7 +6,13 @@ interface MovieProps {
 export function Movie({ title, description }: MovieProps) {
   return (
     <div className="movie">
-      <div className="rounded-md bg-white shadow-lg dark:bg-gray-800">
+      <div
+        className="rounded-lg bg-white shadow-lg dark:bg-gray-800"
+        style={{
+          boxShadow:
+            "0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22)",
+        }}
+      >
         <div className="max-w-4xl px-4 leading-none md:flex">
           <div className="flex-none">
             <img
