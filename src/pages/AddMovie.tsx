@@ -16,8 +16,7 @@ export default function Movies() {
     e.preventDefault();
     if (title.length > 0) {
       setSearchQuery("");
-      const accessToken = localStorage.getItem("accessToken") as string;
-      const movies = await fetchMovies(accessToken, title);
+      const movies = await fetchMovies(title);
       setSearchQuery(title);
       setSearchResults(movies);
     } else {

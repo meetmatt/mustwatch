@@ -1,28 +1,18 @@
 import { Button, DarkThemeToggle, Navbar } from "flowbite-react";
 import logo from "../assets/logo-no-bg-no-text.png";
-import { Link, NavLink, useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
+import { useContext, useEffect } from "react";
+import { AuthContext } from "./AuthContext";
 
 export default function Header() {
+  const { loggedIn, user } = useContext(AuthContext);
   const location = useLocation();
-  const [userId, setUserId] = useState(null);
-
+  const navigate = useNavigate();
   useEffect(() => {
-    (async () => {
-      const accessToken = localStorage.getItem("accessToken");
-      const meResponse = await fetch(
-        `${import.meta.env.VITE_API_HOST}auth/me`,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            "Content-type": "application/json",
-          },
-        },
-      );
-      const me = await meResponse.json();
-      setUserId(me.userId);
-    })();
-  }, []);
+    if (!user) {
+      navigate("/auth/login");
+    }
+  });
 
   return (
     <header>
@@ -53,7 +43,7 @@ export default function Header() {
           </Navbar.Link>
         </Navbar.Collapse>
       </Navbar>
-      {userId && <p>UserID: {userId}</p>}
+      {loggedIn && user && <p>UserID: {user.userId}</p>}
     </header>
   );
 }

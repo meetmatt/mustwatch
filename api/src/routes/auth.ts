@@ -127,9 +127,14 @@ export const handlerRefreshToken = async (ctx: Context) => {
 };
 
 export const handleMe = async (ctx: Context) => {
-  const accessToken = ctx.request.headers.get("Authorization")?.split(" ")[1];
-  const me = await verifyJwt(String(accessToken));
+  try {
+    const accessToken = ctx.request.headers.get("Authorization")?.split(" ")[1];
+    const me = await verifyJwt(String(accessToken));
 
-  ctx.response.status = 200;
-  ctx.response.body = me;
+    ctx.response.status = 200;
+    ctx.response.body = me;
+  } catch (error) {
+    ctx.response.status = 401;
+    ctx.response.body = { error: "Unauthorized", details: error };
+  }
 };

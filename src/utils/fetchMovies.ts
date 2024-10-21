@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import logo from "../assets/logo-no-bg-no-text.png";
 
 export type MovieData = {
@@ -10,9 +11,13 @@ export type MovieData = {
 };
 
 export const fetchMovies = async function (
-  accessToken: string,
   query: string,
 ): Promise<MovieData[]> {
+  const accessToken = localStorage.getItem("accessToken") as string;
+  if (!accessToken) {
+    const navigate = useNavigate();
+    navigate("/auth/login");
+  }
   const encodedQuery = encodeURIComponent(query);
   const url = `${import.meta.env.VITE_API_HOST}api/movies?q=${encodedQuery}`;
 
