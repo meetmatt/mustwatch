@@ -25,9 +25,13 @@ export const handleOAuthCallback = async (ctx: Context) => {
     throw new Error("Invalid codeVerifier parameter");
   }
 
+  const authResponseUri = decodeURIComponent(
+    String(ctx.request.url.searchParams.get("authResponseUri")),
+  );
+
   try {
     // Exchange the authorization code for access and ID tokens
-    const tokenResponse = await oauth2Client.code.getToken(ctx.request.url, {
+    const tokenResponse = await oauth2Client.code.getToken(authResponseUri, {
       codeVerifier,
     });
 

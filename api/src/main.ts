@@ -13,6 +13,6 @@ app.use(oakCors());
 app.use(router.routes());
 app.use(router.allowedMethods());
 
-await app.listen({ port: Number(Deno.env.get("PORT")) });
+await app.listen({ port: Number(Deno.env.get("API_PORT")) });
 
 export default app;

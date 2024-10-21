@@ -19,8 +19,9 @@ export default function AuthCallback() {
         const encodedCodeVerifier = encodeURIComponent(codeVerifier);
 
         try {
+          const authResponseUri = encodeURIComponent(window.location.href);
           const response = await fetch(
-            `${import.meta.env.VITE_API_HOST}api/auth/callback${window.location.search}&codeVerifier=${encodedCodeVerifier}`,
+            `${import.meta.env.VITE_API_HOST}api/auth/callback?authResponseUri=${authResponseUri}&codeVerifier=${encodedCodeVerifier}`,
           );
           const { access_token, refresh_token } = await response.json();
           localStorage.setItem("accessToken", access_token);
