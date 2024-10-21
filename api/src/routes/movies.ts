@@ -31,5 +31,5 @@ export async function handleSearchMovies(ctx: Context) {
   }
 
   const results = await searchMovies(query);
-  ctx.response.body = results;
+  ctx.response.body = { data: results };
 }

@@ -9,21 +9,20 @@ import {
 import { prisma } from "../../prisma/client.ts";
 
 export const handleLogin = async (ctx: Context) => {
-  // Construct the URL for the authorization redirect and get a PKCE codeVerifier
   const { uri, codeVerifier } = await oauth2Client.code.getAuthorizationUri();
 
-  // Store both the state and codeVerifier in the user session
-  ctx.state.session.flash("codeVerifier", codeVerifier);
-
-  // Redirect the user to the authorization endpoint
-  ctx.response.redirect(uri);
+  ctx.response.status = 200;
+  ctx.response.body = {
+    redirect_uri: uri,
+    code_verifier: codeVerifier,
+  };
 };
 
 export const handleOAuthCallback = async (ctx: Context) => {
   // Make sure the codeVerifier is present for the user's session
-  const codeVerifier = ctx.state.session.get("codeVerifier");
+  const codeVerifier = ctx.request.url.searchParams.get("codeVerifier");
   if (typeof codeVerifier !== "string") {
-    throw new Error("invalid codeVerifier");
+    throw new Error("Invalid codeVerifier parameter");
   }
 
   try {
@@ -39,7 +38,7 @@ export const handleOAuthCallback = async (ctx: Context) => {
         headers: {
           Authorization: `Bearer ${tokenResponse.accessToken}`,
         },
-      }
+      },
     );
 
     if (!userInfoResponse.ok) {

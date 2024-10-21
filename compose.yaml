@@ -1,20 +1,20 @@
 services:
-  frontend:
-    build: .
-    depends_on: [api]
-
   api:
     build: api
     depends_on: [postgres]
     volumes:
       - auth:/app/data/auth:rw
 
+  frontend:
+    build: .
+    depends_on: [api]
+
   postgres:
     image: postgres:16.4-alpine
     shm_size: 128m
     volumes:
-      - data:/app/data/postgres:rw
+      - postgres:/var/lib/postgresql:rw
 
 volumes:
-  data:
+  postgres:
   auth:

@@ -9,7 +9,7 @@ const AUTH_TOKEN_TTL: number = 3600; // 1 hour
 const REFRESH_TOKEN_TTL: number = 2592000; // 30 days
 
 const SECRET_KEY_FORMAT = "jwk";
-const SECRET_KEY_FILE_PATH = "./data/jwk.json";
+const SECRET_KEY_FILE_PATH = "./data/auth/jwk.json";
 const SECRET_KEY_ALGO: { name: string; hash: string } = {
   name: "HMAC",
   hash: "SHA-512",
@@ -27,18 +27,18 @@ export const getSecretKey = async (): Promise<CryptoKey> => {
       secretKey,
       SECRET_KEY_ALGO,
       false,
-      SECRET_KEY_USAGES
+      SECRET_KEY_USAGES,
     );
   } catch (_) {
     // file doesn't exist or corrupted — generate secretKey and write to file as JWK
     const secretKey: CryptoKey = (await crypto.subtle.generateKey(
       SECRET_KEY_ALGO,
       true,
-      SECRET_KEY_USAGES
+      SECRET_KEY_USAGES,
     )) as CryptoKey;
     const exportedKey: JsonWebKey = await crypto.subtle.exportKey(
       SECRET_KEY_FORMAT,
-      secretKey
+      secretKey,
     );
     const serializedKey: string = JSON.stringify(exportedKey);
 
@@ -56,7 +56,7 @@ export const generateJwt = async (userId: number) => {
       userId,
       exp: getNumericDate(AUTH_TOKEN_TTL),
     },
-    await getSecretKey()
+    await getSecretKey(),
   );
 };
 
@@ -68,7 +68,7 @@ export const generateRefreshToken = async (userId: number) => {
       userId,
       exp: getNumericDate(REFRESH_TOKEN_TTL),
     },
-    await getSecretKey()
+    await getSecretKey(),
   );
 };
 

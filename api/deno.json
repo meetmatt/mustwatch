@@ -1,8 +1,7 @@
 {
   "tasks": {
-    "dev": "pwd && ls -la && deno run -A --watch src/main.ts",
+    "dev": "deno run -A --watch src/main.ts",
     "prisma": "deno run -A --unstable npm:prisma",
-    "build": "deno bundle src/main.ts dist/main.js",
     "prisma:generate": "deno task prisma generate --schema ./prisma/schema.prisma && deno task prisma:patch",
     "prisma:patch": "deno run -A prisma/patch.ts",
     "test": "deno test -A"
