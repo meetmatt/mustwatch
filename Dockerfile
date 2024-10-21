@@ -2,12 +2,13 @@ FROM node:22-slim as dev
 WORKDIR /app
 EXPOSE 8000
 RUN npm install -g vite
-COPY ./package.json /app/package.json
+COPY package.json /app
 RUN npm install
 CMD ["vite"]
 
 FROM node:22-alpine as builder
 WORKDIR /app
+RUN npm install -g vite
 COPY package.json /app
 RUN npm install
 COPY . .
