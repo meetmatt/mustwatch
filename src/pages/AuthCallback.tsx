@@ -20,7 +20,7 @@ export default function AuthCallback() {
 
         try {
           const response = await fetch(
-            `${import.meta.env.VITE_API_HOST}auth/callback${window.location.search}&codeVerifier=${encodedCodeVerifier}`,
+            `${import.meta.env.VITE_API_HOST}api/auth/callback${window.location.search}&codeVerifier=${encodedCodeVerifier}`,
           );
           const { access_token, refresh_token } = await response.json();
           localStorage.setItem("accessToken", access_token);

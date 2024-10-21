@@ -12,10 +12,10 @@ import { handleSearchMovies, handleCreateMovie } from "./routes/movies.ts";
 
 export const router = new Router<AppState>();
 
-router.get("/auth/me", handleMe);
-router.get("/auth/login", handleLogin);
-router.get("/auth/callback", handleOAuthCallback);
-router.post("/auth/refresh", handlerRefreshToken);
+router.get("/api/auth/me", handleMe);
+router.get("/api/auth/login", handleLogin);
+router.get("/api/auth/callback", handleOAuthCallback);
+router.post("/api/auth/refresh", handlerRefreshToken);
 
 router.get("/api/movies", authMiddleware, handleSearchMovies);
 router.post("/api/movies", authMiddleware, handleCreateMovie);

@@ -9,12 +9,15 @@ export const AuthContextProvider = ({ children }: any) => {
   const checkLoginState = useCallback(async () => {
     try {
       const accessToken = localStorage.getItem("accessToken") as string;
-      const response = await fetch(`${import.meta.env.VITE_API_HOST}auth/me`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          "Content-type": "application/json",
+      const response = await fetch(
+        `${import.meta.env.VITE_API_HOST}api/auth/me`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-type": "application/json",
+          },
         },
-      });
+      );
       const user = await response.json();
       if (user) {
         setLoggedIn(true);

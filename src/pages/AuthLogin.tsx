@@ -9,7 +9,7 @@ export default function AuthLogin() {
     try {
       setMessage("You are being redirected to Google...");
       const response = await fetch(
-        `${import.meta.env.VITE_API_HOST}auth/login`,
+        `${import.meta.env.VITE_API_HOST}api/auth/login`,
       );
       const { redirect_uri, code_verifier } = await response.json();
 
