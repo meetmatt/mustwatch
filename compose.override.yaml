@@ -2,8 +2,6 @@ services:
   api:
     build:
       target: dev
-      args:
-        DATABASE_URL: ${DATABASE_URL:?error}
     volumes:
       - ./api:/app
     ports:
