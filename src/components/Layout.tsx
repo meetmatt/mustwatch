@@ -7,7 +7,7 @@ export default function Layout() {
   return (
     <Flowbite>
       <Header />
-      <main>
+      <main className="min-h-[calc(100vh-160px)] bg-gray-100 dark:bg-gray-900">
         <Outlet />
       </main>
       <Footer />
