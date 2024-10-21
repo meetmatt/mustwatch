@@ -1,12 +1,18 @@
 services:
   api:
-    build: api
+    build:
+      context: api
+      target: prod
+      args:
+        DATABASE_URL: ${DATABASE_URL:?error}
     depends_on: [postgres]
     volumes:
       - auth:/app/data/auth:rw
 
   frontend:
-    build: .
+    build:
+      context: .
+      target: prod
     depends_on: [api]
 
   postgres:
