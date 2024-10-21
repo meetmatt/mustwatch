@@ -1,5 +1,5 @@
 import { Button, DarkThemeToggle, Navbar } from "flowbite-react";
-import logo from "../../assets/logo-no-bg-no-text.png";
+import logo from "../assets/logo-no-bg-no-text.png";
 import { Link, NavLink, useLocation } from "react-router-dom";
 
 export default function Header() {
@@ -10,7 +10,7 @@ export default function Header() {
       <Navbar fluid className="drop-shadow-md">
         <Navbar.Brand as={Link} to="/">
           <img src={logo} className="mr-3 h-8 sm:h-12" alt="Must Watch" />
-          <span className="text-md self-center whitespace-nowrap font-semibold text-gray-900 sm:text-xl dark:text-gray-100">
+          <span className="text-md self-center whitespace-nowrap font-semibold text-gray-900 dark:text-gray-100 sm:text-xl">
             Must Watch
           </span>
         </Navbar.Brand>
