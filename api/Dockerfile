@@ -1,21 +1,19 @@
 FROM denoland/deno as builder
-
-ARG DATABASE_URL=
-ENV DATABASE_URL=${DATABASE_URL}
-
 WORKDIR /app
-ENV PORT=9000
-EXPOSE 9000
-
-COPY . /app
-
 RUN apt-get update -yqq && apt-get install -yqq openssl
+COPY . /app
 RUN deno task prisma:generate
-RUN deno task prisma migrate dev --skip-generate
 
 FROM builder as dev
+ARG DATABASE_URL
+ENV DATABASE_URL=${DATABASE_URL}
+ENV PORT=9000
+EXPOSE 9000
+RUN deno task prisma migrate dev --skip-generate
 CMD ["task", "dev"]
 
 FROM builder as prod
+ENV PORT=80
+EXPOSE 80
 RUN deno cache src/main.ts
 CMD ["run", "--allow-net", "--allow-env", "--allow-read", "--allow-ffi", "src/main.ts"]
