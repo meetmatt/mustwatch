@@ -3,6 +3,7 @@ import type { AppState } from "./main.ts";
 import { authMiddleware } from "./middleware/authMiddleware.ts";
 import {
   handleLogin,
+  handleMe,
   handleOAuthCallback,
   handlerRefreshToken,
 } from "./routes/auth.ts";
@@ -11,6 +12,7 @@ import { handleSearchMovies, handleCreateMovie } from "./routes/movies.ts";
 
 export const router = new Router<AppState>();
 
+router.get("/auth/me", handleMe);
 router.get("/auth/login", handleLogin);
 router.get("/auth/callback", handleOAuthCallback);
 router.post("/auth/refresh", handlerRefreshToken);

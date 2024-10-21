@@ -10,13 +10,19 @@ export type MovieData = {
 };
 
 export const fetchMovies = async function (
+  accessToken: string,
   query: string,
 ): Promise<MovieData[]> {
   const encodedQuery = encodeURIComponent(query);
   const url = `${import.meta.env.VITE_API_HOST}api/movies?q=${encodedQuery}`;
 
   try {
-    const response = await fetch(url);
+    const response = await fetch(url, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-type": "application/json",
+      },
+    });
     const json = await response.json();
     const movies: MovieData[] = json.data;
 

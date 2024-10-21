@@ -125,3 +125,11 @@ export const handlerRefreshToken = async (ctx: Context) => {
     ctx.response.body = { error: "Failed to refresh token" };
   }
 };
+
+export const handleMe = async (ctx: Context) => {
+  const accessToken = ctx.request.headers.get("Authorization")?.split(" ")[1];
+  const me = await verifyJwt(String(accessToken));
+
+  ctx.response.status = 200;
+  ctx.response.body = me;
+};
